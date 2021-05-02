@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace fb_clone.DTO
+namespace fb_clone.Auth
 {
-    public class LoginResponseDTO
+    public class TokenResponseDTO
     {
         public string AccessToken { get; set; }
-
-        public int ExpiresIn { get; set; }
+        public uint ExpiresIn { get; set; }
     }
 }

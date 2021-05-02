@@ -1,6 +1,7 @@
 # Facebook Clone 
 
-Facebook Clone is a minimalist version of facebook. This project is built only for learning purposes of C# and .Net Core.
+> Facebook Clone is a minimalist version of facebook. This project is built only for learning purposes of C# and .Net Core.
+
 
 # Technology Stack
 
@@ -12,6 +13,7 @@ Facebook Clone is a minimalist version of facebook. This project is built only f
 * User Authentication with .Net Core Identity
 * JWT Bearer Token
 * Role base Authorzation
+* Photo Uploading
 
 ## Requirements
 

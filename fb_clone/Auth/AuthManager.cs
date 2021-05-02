@@ -23,12 +23,18 @@ namespace fb_clone.Auth
             this.userManager = userManager;
             this.configuration = configuration;
         }
-        public async Task<string> GenerateToken(AppUser user)
+        public async Task<TokenResponseDTO> GenerateToken(AppUser user)
         {
             var signinCredentials = GetSigningCredentials(user);
             var claims = await GetClaims(user);
             var token = CreateToken(signinCredentials, claims);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            var miliSec = (uint)token.ValidTo.Subtract(DateTime.UtcNow).TotalMilliseconds;
+            return new TokenResponseDTO
+            {
+                AccessToken = jwtToken,
+                ExpiresIn = miliSec
+            };
         }
 
         public async Task<AppUser> ValidateUser(LoginRequstDTO login)

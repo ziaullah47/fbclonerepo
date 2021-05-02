@@ -10,6 +10,6 @@ namespace fb_clone.Auth
     public interface IAuthManager
     {
         Task<AppUser> ValidateUser(LoginRequstDTO login);
-        Task<string> GenerateToken(AppUser user);
+        Task<TokenResponseDTO> GenerateToken(AppUser user);
     }
 }

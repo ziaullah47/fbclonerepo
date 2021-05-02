@@ -22,8 +22,9 @@ export enum HTTPStatusEnum {
       password: string;
   }
 
-  export interface ILoginResponse {
+  export interface ITokenResponse {
       accessToken: string;
+      expiresIn: number
   }
 
   export enum AlertVariant {
@@ -33,4 +34,11 @@ export enum HTTPStatusEnum {
     INFO = "alert alert-info",
     WARNING = "alert alert-warning",
     DANGER = "alert alert-danger",
+  }
+
+  export interface IUser {
+      id: number;
+      firstName: string;
+      lastName: string;
+      email: string;
   }

@@ -32,7 +32,7 @@ export const AlertContext = createContext<IAlertContext>(contextDefaultValue);
 
 const Provider = AlertContext.Provider;
 
-const AlertContextProvider: React.FunctionComponent<IProps> = props => {
+export const AlertContextProvider: React.FunctionComponent<IProps> = props => {
     const [message, setMessage] = useState<string | null>(null);
     const [type, setType] = useState<AlertVariant>(AlertVariant.SUCCESS);
     const [dismissable, setDismissable] = useState<boolean>(true);
@@ -69,4 +69,3 @@ const AlertContextProvider: React.FunctionComponent<IProps> = props => {
     };
     return <Provider value={initialState}>{props.children}</Provider>;
 };
-export default AlertContextProvider;

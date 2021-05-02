@@ -7,15 +7,15 @@ class CookieService {
         this.cookies = new Cookies();
     }
 
-    public get(name:string) {
-        this.cookies.get(name);
+    public get(name:string) : string {
+        return this.cookies.get(name);
     }
 
-    public set(name: string, value: string | object, options?: CookieSetOptions) {
+    public set(name: string, value: string | object, options?: CookieSetOptions): void {
         this.cookies.set(name, value, options)
     }
 
-    public remove(name: string, options?: CookieSetOptions) {
+    public remove(name: string, options?: CookieSetOptions): void {
         this.cookies.remove(name, options);
     }
 }

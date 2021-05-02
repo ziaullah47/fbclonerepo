@@ -74,9 +74,7 @@ namespace fb_clone.Controllers
             }
             var token = await authManager.GenerateToken(user);
 
-            var result = mapper.Map<LoginResponseDTO>(user);
-            result.AccessToken = token;
-            return Ok(result);
+            return Ok(token);
 
         }
     }
