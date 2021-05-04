@@ -1,8 +1,9 @@
-.home-wrapper{
+.home-wrapper {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
+
 .home-content {
     display: flex;
     flex-direction: row;
@@ -11,25 +12,30 @@
     justify-items: center;
     flex: 1
 }
+
 .home-footer {
     background-color: #FFFFFF;
 }
+
 .left-content {
     width: 25%;
 }
+
 .signin-signup {
     padding: 10px;
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
     border-radius: 8px;
-  }
+}
 
-  .gender {
-      border: 1px solid #CCD0D5;
-      padding: 10px;
-      border-radius: 8px;
-  }
-  .gender-radio {
-    float: none !important;;
-    margin-left:10px !important;
-  }
+.gender {
+    border: 1px solid #CCD0D5;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.gender-radio {
+    float: none !important;
+    ;
+    margin-left: 10px !important;
+}

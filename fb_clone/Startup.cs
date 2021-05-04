@@ -3,6 +3,8 @@ using fb_clone.Configurations;
 using fb_clone.DTO;
 using fb_clone.Exceptions;
 using fb_clone.Extensions;
+using fb_clone.Interfaces;
+using fb_clone.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,9 +34,11 @@ namespace fb_clone
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureDbContext(Configuration);
+            services.AddAuthentication();
             services.ConfigureIdentity();
             services.AddAutoMapper(typeof(AutoMapperConfiguration));
             services.ConfigureJwt(Configuration);
+            services.AddTransient<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddControllersWithViews().AddNewtonsoftJson(o =>
             {

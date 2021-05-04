@@ -1,13 +1,13 @@
 import React, { FormEvent, useContext, useState } from "react"
 import { Form, Input, Button, Modal, ModalHeader, ModalBody, Row, Col, FormGroup, Label } from "reactstrap";
-import { ACCESS_TOKEN_COOKIE_NAME, COOKIE_PATH } from "../common/Constants";
-import { AlertVariant, ILoginRequest, ISignUpRequest } from "../common/types";
-import { axiosErrorParser } from "../common/utils/ErrorParser";
-import {AlertContext} from "../contexts/AlertContext";
-import { AuthContext } from "../contexts/AuthContext";
-import AuthService from "../services/AuthService";
-import CookieService from "../services/CookieService";
-import FlashAlert from "./FlashAlert";
+import { ACCESS_TOKEN_COOKIE_NAME, COOKIE_PATH } from "../../common/Constants";
+import { ILoginRequest, ISignUpRequest, AlertVariant } from "../../common/types";
+import { axiosErrorParser } from "../../common/utils/ErrorParser";
+import { AlertContext } from "../../contexts/AlertContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import AuthService from "../../services/AuthService";
+import CookieService from "../../services/CookieService";
+import FlashAlert from "../FlashAlert";
 
 interface IRegisterForm {
     firstName: string;
@@ -26,11 +26,11 @@ const LoginAndRegistration: React.FunctionComponent = () => {
     const cookieService = new CookieService();
     const alertContext = useContext(AlertContext);
     const authContext = useContext(AuthContext);
-    
+
     const TODAY = new Date();
     const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-    
+
     const [modal, setModal] = useState<boolean>(false);
     const initialRegFormState = {
         firstName: "",
@@ -81,13 +81,18 @@ const LoginAndRegistration: React.FunctionComponent = () => {
         e.preventDefault();
         authService.logIn(loginForm).then(resp => {
 
-            var date = new Date();
-            var expiresIn = new Date(date.getTime() + resp.data.expiresIn);
+            let date = new Date();
+            let expiresIn = new Date(date.getTime() + resp.data.expiresIn);
             cookieService.set(ACCESS_TOKEN_COOKIE_NAME, resp.data.accessToken, {
                 path: COOKIE_PATH,
                 expires: expiresIn
+            });
+
+            authService.getCurrentUser().then(resp => {
+                authContext.login(resp.data);
+            }).catch(err => {
+                setLoginErrors(axiosErrorParser(err));
             })
-            authContext.login();
 
         }).catch(err => {
             setLoginErrors(axiosErrorParser(err));

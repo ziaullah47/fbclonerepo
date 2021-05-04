@@ -4,13 +4,11 @@ import { Container } from 'reactstrap';
 export class Layout extends Component {
   static displayName = Layout.name;
 
-  render () {
+  render() {
     return (
-      <div className="content-wrapper">
-        <Container>
-          {this.props.children}
-        </Container>
-      </div>
+      <Container fluid={true} className="px-0">
+        {this.props.children}
+      </Container>
     );
   }
 }

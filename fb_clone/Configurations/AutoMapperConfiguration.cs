@@ -13,6 +13,7 @@ namespace fb_clone.Configurations
         public AutoMapperConfiguration()
         {
             CreateMap<AppUser, SignUpRequestDTO>().ReverseMap();
+            CreateMap<AppUser, UserDTO>().ReverseMap();
         }
     }
 }

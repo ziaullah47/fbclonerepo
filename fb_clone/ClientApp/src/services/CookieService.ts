@@ -7,7 +7,7 @@ class CookieService {
         this.cookies = new Cookies();
     }
 
-    public get(name:string) : string {
+    public get(name:string) {
         return this.cookies.get(name);
     }
 
