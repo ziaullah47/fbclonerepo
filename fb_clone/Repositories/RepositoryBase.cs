@@ -19,6 +19,12 @@ namespace fb_clone.Repositories
             this.context = context;
             this.db = context.Set<T>();
         }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            var item = await db.FindAsync(id);
+            db.Remove(item);
+        }
         public void Delete(T entity)
         {
             db.Remove(entity);

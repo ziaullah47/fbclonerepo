@@ -10,7 +10,11 @@ namespace fb_clone.Repositories
     public class RepositoryManager : IRepositoryManager
     {
         private readonly AppDbContext context;
-        private RepositoryBase<AppUser> user;
+        private UserRepository user;
+        private RepositoryBase<Post> post;
+        private RepositoryBase<PostUserLikes> postUserLike;
+        private RepositoryBase<PostComment> postComment;
+        private RepositoryBase<CommentUserLikes> commentLike;
 
         private bool disposed = false;
 
@@ -19,7 +23,14 @@ namespace fb_clone.Repositories
             this.context = context;
         }
 
-        public IRepositoryBase<AppUser> Users => user ??= new RepositoryBase<AppUser>(context);
+        public UserRepository Users => user ??= new UserRepository(context);
+        public IRepositoryBase<Post> Posts => post ??= new RepositoryBase<Post>(context);
+
+        public IRepositoryBase<PostUserLikes> PostLikes => postUserLike ??= new RepositoryBase<PostUserLikes>(context);
+
+        public IRepositoryBase<PostComment> PostComments => postComment ??= new RepositoryBase<PostComment>(context);
+
+        public IRepositoryBase<CommentUserLikes> CommentLikes => commentLike ??= new RepositoryBase<CommentUserLikes>(context);
 
         protected virtual void Dispose(bool disposing)
         {

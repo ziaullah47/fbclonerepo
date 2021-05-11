@@ -14,6 +14,17 @@ namespace fb_clone.Configurations
         {
             CreateMap<AppUser, SignUpRequestDTO>().ReverseMap();
             CreateMap<AppUser, UserDTO>().ReverseMap();
+
+            CreateMap<Post, PostCreateDTO>().ReverseMap();
+            CreateMap<Post, PostDTO>()
+                .ForMember(dest => dest.TotalLikes, opt => opt.MapFrom(src => src.PostLikes.Count))
+                .ForMember(dest => dest.TotalComments, opt => opt.MapFrom(src => src.Comments.Count))
+                .ReverseMap();
+            CreateMap<Post, PostUpdateDTO>().ReverseMap();
+
+            CreateMap<PostComment, CommentCreateDTO>().ReverseMap();
+            CreateMap<PostComment, CommentDTO>().ReverseMap();
+            CreateMap<PostComment, CommentUpdateDTO>().ReverseMap();
         }
     }
 }

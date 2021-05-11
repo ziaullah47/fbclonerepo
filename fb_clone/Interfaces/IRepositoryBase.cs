@@ -21,6 +21,7 @@ namespace fb_clone.Interfaces
 
         Task InsertRangeAsync(IEnumerable<T> entities);
 
+        Task DeleteByIdAsync(int id);
         void Delete(T entity);
 
         void DeleteRange(IEnumerable<T> entities);

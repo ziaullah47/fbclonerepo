@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fb_clone.Models;
 
 namespace fb_clone.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210510072512_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -301,9 +303,6 @@ namespace fb_clone.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
@@ -313,8 +312,6 @@ namespace fb_clone.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("ParentId");
 
                     b.HasIndex("PostId");
 
@@ -425,11 +422,6 @@ namespace fb_clone.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("fb_clone.Models.PostComment", "Parent")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("fb_clone.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
@@ -437,8 +429,6 @@ namespace fb_clone.Migrations
                         .IsRequired();
 
                     b.Navigation("CommentedBy");
-
-                    b.Navigation("Parent");
 
                     b.Navigation("Post");
                 });
@@ -483,8 +473,6 @@ namespace fb_clone.Migrations
             modelBuilder.Entity("fb_clone.Models.PostComment", b =>
                 {
                     b.Navigation("Likes");
-
-                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

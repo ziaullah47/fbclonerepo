@@ -10,8 +10,8 @@ using fb_clone.Models;
 namespace fb_clone.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210430065635_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210510123639_CommentReplies")]
+    partial class CommentReplies
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -245,6 +245,99 @@ namespace fb_clone.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("fb_clone.Models.CommentUserLikes", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommentId", "AppUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("CommentUserLikes");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Post");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.PostComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostComment");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.PostUserLikes", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId", "AppUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("PostUserLikes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
@@ -294,6 +387,106 @@ namespace fb_clone.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("fb_clone.Models.CommentUserLikes", b =>
+                {
+                    b.HasOne("fb_clone.Models.AppUser", "CommentedBy")
+                        .WithMany("CommentLikes")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("fb_clone.Models.PostComment", "Comment")
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("CommentedBy");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.Post", b =>
+                {
+                    b.HasOne("fb_clone.Models.AppUser", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.PostComment", b =>
+                {
+                    b.HasOne("fb_clone.Models.AppUser", "CommentedBy")
+                        .WithMany("PostComments")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("fb_clone.Models.PostComment", "Parent")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("fb_clone.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommentedBy");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.PostUserLikes", b =>
+                {
+                    b.HasOne("fb_clone.Models.AppUser", "AppUser")
+                        .WithMany("PostLikes")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("fb_clone.Models.Post", "Post")
+                        .WithMany("PostLikes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.AppUser", b =>
+                {
+                    b.Navigation("CommentLikes");
+
+                    b.Navigation("PostComments");
+
+                    b.Navigation("PostLikes");
+
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("PostLikes");
+                });
+
+            modelBuilder.Entity("fb_clone.Models.PostComment", b =>
+                {
+                    b.Navigation("Likes");
+
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

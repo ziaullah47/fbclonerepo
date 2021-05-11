@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { ACCESS_TOKEN_COOKIE_NAME, LOGGED_IN_USER_COOKIE_NAME } from "../common/Constants";
+import { ACCESS_TOKEN_COOKIE_NAME, COOKIE_PATH, LOGGED_IN_USER_COOKIE_NAME } from "../common/Constants";
 import { IUser } from "../common/types";
 import CookieService from "../services/CookieService";
 
@@ -38,6 +38,8 @@ export const AuthContextProvider: React.FunctionComponent<IProp> = (props) => {
     }
 
     const handleLogout = () => {
+        cookieService.remove(ACCESS_TOKEN_COOKIE_NAME, {path: COOKIE_PATH});
+        cookieService.remove(LOGGED_IN_USER_COOKIE_NAME, { path: COOKIE_PATH })
         setIsAuthenticated(false);
         setCurrentUser(null);
     }

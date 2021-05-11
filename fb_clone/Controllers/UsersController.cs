@@ -4,12 +4,8 @@ using fb_clone.Exceptions;
 using fb_clone.Interfaces;
 using fb_clone.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,14 +15,12 @@ namespace fb_clone.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IRepositoryManager repositoryManager;
-        private readonly UserManager<AppUser> userManager;
+        private readonly IRepositoryManager repository;
         private readonly IMapper mapper;
 
-        public UsersController(IRepositoryManager repo, UserManager<AppUser> userManager, IMapper mapper)
+        public UsersController(IRepositoryManager repo, IMapper mapper)
         {
-            this.repositoryManager = repo;
-            this.userManager = userManager;
+            this.repository = repo;
             this.mapper = mapper;
         }
 
@@ -35,8 +29,8 @@ namespace fb_clone.Controllers
         [Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {
-            var user = await userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            if(user == null)
+            var user = await repository.Users.GetUserByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if (user == null)
             {
                 throw new UnauthorizeException("We cannot authenticate you. Login again");
             }

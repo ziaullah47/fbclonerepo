@@ -1,18 +1,24 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
-import { Collapse, Form, Input, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from "reactstrap";
+import { Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from "reactstrap";
 import { AuthContext } from "../contexts/AuthContext";
 import Avatar from "./Avatar";
 
 const TopNav: React.FunctionComponent = () => {
     const authContext = useContext(AuthContext);
 
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isCollasped, setIsCollasped] = useState<boolean>(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
-    const toggle = () => setIsOpen(!isOpen);
+    const toggleCollaspse = () => setIsCollasped(!isCollasped);
+    const toogleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
     const seachOnSubmit = () => {
         alert("Not implemented");
+    }
+
+    const handleLogout = () => {
+        authContext.logout();
     }
 
     return (
@@ -23,19 +29,19 @@ const TopNav: React.FunctionComponent = () => {
                         <FontAwesomeIcon icon={['fab', 'facebook']} color="#0E8EF2" size="2x" />
                     </NavbarBrand>
 
-                    <NavbarToggler onClick={toggle} />
+                    <NavbarToggler onClick={toggleCollaspse} />
                     <Nav navbar>
                         <NavItem>
                             <Form onSubmit={seachOnSubmit}>
                                 <div className="d-flex justify-content-center align-items-center nav-search">
                                     <FontAwesomeIcon icon="search" />
-                                    <Input type="search" placeholder="Search Facebook"></Input>
+                                    <Input className="custom-input" type="search" placeholder="Search Facebook"></Input>
                                 </div>
                             </Form>
                         </NavItem>
                     </Nav>
                 </div>
-                <Collapse isOpen={isOpen} navbar  className="nav-items-middle">
+                <Collapse isOpen={isCollasped} navbar className="nav-items-middle">
                     <Nav navbar>
                         <NavItem className="px-4">
                             <NavLink href="/">
@@ -64,12 +70,12 @@ const TopNav: React.FunctionComponent = () => {
                         </NavItem>
                     </Nav>
                 </Collapse>
-                <Collapse isOpen={isOpen} navbar className="nav-items-right">
+                <Collapse isOpen={isCollasped} navbar className="nav-items-right">
                     <Nav navbar >
                         <NavItem className="px-4">
                             <NavLink href="/" className="d-flex align-items-center justify-content-center">
-                               <Avatar url="https://avatars.githubusercontent.com/u/4953463?v=4" width="40px" height="40px"/>
-                               <span className="ml-1">{authContext.currentUser?.firstName}</span>
+                                <Avatar url="https://avatars.githubusercontent.com/u/4953463?v=4" width="40px" height="40px" />
+                                <span className="ml-1">{authContext.currentUser?.firstName}</span>
                             </NavLink>
                         </NavItem>
                         <NavItem className="px-4">
@@ -87,10 +93,18 @@ const TopNav: React.FunctionComponent = () => {
                                 <FontAwesomeIcon icon="bell" size="2x" />
                             </NavLink>
                         </NavItem>
-                        <NavItem className="px-4">
-                            <NavLink href="/">
-                                <FontAwesomeIcon icon="caret-down" size="2x" />
-                            </NavLink>
+                        <NavItem className="px-4 d-flex align-items-center">
+                            <Dropdown isOpen={isDropdownOpen} toggle={toogleDropdown}>
+                                <DropdownToggle tag="div">
+                                    <FontAwesomeIcon icon="caret-down" size="2x" />
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem onClick={handleLogout}>
+                                        <FontAwesomeIcon icon="sign-out-alt" />
+                                        <span className="ml-3">Sign Out</span>
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
                         </NavItem>
                     </Nav>
                 </Collapse>

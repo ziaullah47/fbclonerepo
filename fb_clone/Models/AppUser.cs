@@ -35,5 +35,13 @@ namespace fb_clone.Models
         public GenderEnum Gender { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        public ICollection<Post> Posts { get; set; }
+
+        public ICollection<PostUserLikes> PostLikes { get; set; }
+
+        public ICollection<PostComment> PostComments { get; set; }
+
+        public ICollection<CommentUserLikes> CommentLikes { get; set; }
     }
 }

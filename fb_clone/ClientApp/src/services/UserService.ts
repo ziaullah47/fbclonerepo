@@ -9,10 +9,5 @@ class UserService {
     constructor() {
         this.httpRequest = new HttpRequest();
     }
-
-    public async getCurrentUser() : Promise<AxiosResponse<IUser>> {
-        const url = "/users/current_user";
-        return await this.httpRequest.get<IUser>(url);
-    }
 }
 export default UserService;
