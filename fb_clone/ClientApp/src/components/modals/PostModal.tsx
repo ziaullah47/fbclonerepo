@@ -48,7 +48,7 @@ const PostModal: React.FunctionComponent<IProp> = (props) => {
             <ModalHeader toggle={toggleHandler}>Create Post</ModalHeader>
             <ModalBody>
                 <div className="create-post-avatar">
-                    <Avatar width="40" height="40" url="https://avatars.githubusercontent.com/u/4953463?v=4" />
+                    <Avatar url={authContext.currentUser?.profilePhoto}/>
                     <span className="mx-2">{fullName}</span>
                 </div>
                 <div className="create-post-form">

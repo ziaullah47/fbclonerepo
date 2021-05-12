@@ -6,7 +6,7 @@
     }
     
     .content-wrapper {
-        margin-top: 75px;
+        margin-top: 58px;
         display: flex;
         justify-content: space-between;
     }
@@ -172,5 +172,81 @@
     }
     
     .clickable {
+        cursor: pointer;
+    }
+    
+    .profile-page {
+        height: 100vh;
+    }
+    
+    .profile-top {
+        background-color: #ffffff;
+    }
+    
+    .cover-photo-section {
+        height: 35vh;
+        width: 55%;
+        margin: 0 auto;
+        position: relative;
+    }
+    
+    .cover-photo-section .cover-upload-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 1%;
+        right: 1%;
+        background-color: #ffffff;
+        z-index: 10;
+        padding: 5px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    
+    .cover-photo-section .cover-photo img {
+        height: 35vh;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    
+    .profile-bottom {
+        display: flex;
+    }
+    
+    .profile-page-avatar {
+        display: flex;
+        justify-content: center;
+        margin-top: -100px;
+        position: relative;
+    }
+    
+    .profile-page-avatar .avatar {
+        border: 5px #ffffff solid;
+        border-radius: 50%;
+    }
+    
+    .default-avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: #F0F2F5;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .profile-upload-icon {
+        position: absolute;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        background-color: #E4E6EB;
+        top: 60%;
+        right: 46%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
     }

@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { Card, CardBody, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from "reactstrap";
-import { IPost, IPostUpdateRequest } from "../common/types";
+import React, { useContext } from "react";
+import { Card, CardBody, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import { IPost } from "../common/types";
+import { AuthContext } from "../contexts/AuthContext";
 import Avatar from "./Avatar";
 import CommentModule from "./commentModule/CommentModule";
 
@@ -14,6 +15,7 @@ interface IProp extends React.HTMLAttributes<HTMLElement> {
 
 const FeedItem: React.FunctionComponent<IProp> = props => {
 
+    const authContext = useContext(AuthContext);
     const {post, editPostHandler, deletePostHandler, likePostHandler} = props;
 
     const klass = post.isLiked ? "text-primary" : "";
@@ -23,7 +25,7 @@ const FeedItem: React.FunctionComponent<IProp> = props => {
                 <CardBody className="pt-2 pb-1">
                     <div className="d-flex justify-content-between">
                         <div className="d-flex">
-                            <Avatar url="https://avatars.githubusercontent.com/u/4953463?v=4" />
+                            <Avatar url={authContext.currentUser?.profilePhoto} />
                             <strong className="pl-2">{post.user.firstName + " " + post.user.lastName}</strong>
                         </div>
                         <div>

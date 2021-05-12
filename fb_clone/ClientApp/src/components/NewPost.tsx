@@ -1,17 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useContext } from "react";
 import { Card, CardBody, CardFooter } from "reactstrap";
+import { AuthContext } from "../contexts/AuthContext";
 import Avatar from "./Avatar";
 
 interface IProp extends React.HtmlHTMLAttributes<HTMLAnchorElement> {
     newPostHandler: () => void;
 }
 const NewPost: React.FunctionComponent<IProp> = props => {
+    const authContext = useContext(AuthContext);
+
     const { newPostHandler } = props;
     return (
         <Card>
             <CardBody className="new-post-top">
-                <Avatar width="40px" height="40px" url="https://avatars.githubusercontent.com/u/4953463?v=4" />
+                <Avatar width="40px" height="40px" url={authContext.currentUser?.profilePhoto} />
                 <div className="new-post-input-div" onClick={newPostHandler}>What's on your mind, Junaid?</div>
             </CardBody>
             <CardFooter className="d-flex justify-content-between">

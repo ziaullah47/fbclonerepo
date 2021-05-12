@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from "reactstrap";
 import { IComment, ICommentCreateRequest, ICommenUpdateRequest } from "../../common/types";
+import { AuthContext } from "../../contexts/AuthContext";
 import CommentService from "../../services/CommentService";
 import Avatar from "../Avatar";
 import CommentGroup from "./CommentGroup";
@@ -15,6 +16,7 @@ interface IProp extends React.HtmlHTMLAttributes<HTMLElement> {
 
 const Comment: React.FunctionComponent<IProp> = props => {
 
+    const authContext = useContext(AuthContext);
     const commentService = new CommentService();
 
     const { comment, deleteHandler, likeHandler, updateHandler } = props;
@@ -120,7 +122,7 @@ const Comment: React.FunctionComponent<IProp> = props => {
     const getReplyInput = () => {
         if (showReply) {
             return <div className="d-flex my-2">
-                <Avatar url="https://avatars.githubusercontent.com/u/4953463?v=4" />
+                <Avatar url={authContext.currentUser?.profilePhoto} />
                 <Input
                     type="text"
                     className="custom-input ml-2"
@@ -183,7 +185,7 @@ const Comment: React.FunctionComponent<IProp> = props => {
 
     return (
         <div className="d-flex">
-            <Avatar url="https://avatars.githubusercontent.com/u/4953463?v=4" />
+            <Avatar url={authContext.currentUser?.profilePhoto} />
             <div className="flex-grow-1 ml-2">
                 <div className="d-flex align-items-center">
                     <div className="flex-grow-1 comment-content">

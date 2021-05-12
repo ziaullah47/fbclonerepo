@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Input } from "reactstrap";
+import { AuthContext } from "../../contexts/AuthContext";
 import Avatar from "../Avatar";
 
 interface IProp extends React.HTMLAttributes<HTMLElement> {
@@ -7,6 +8,8 @@ interface IProp extends React.HTMLAttributes<HTMLElement> {
 }
 
 const NewComment: React.FunctionComponent<IProp> = props => {
+
+    const authContext = useContext(AuthContext);
 
     const [newComment, setNewComment] = useState<string>("");
 
@@ -18,7 +21,7 @@ const NewComment: React.FunctionComponent<IProp> = props => {
     }
     return (
         <div className="d-flex my-2">
-            <Avatar url="https://avatars.githubusercontent.com/u/4953463?v=4" />
+            <Avatar url={authContext.currentUser?.profilePhoto} />
             <Input
                 type="text"
                 className="custom-input ml-2"

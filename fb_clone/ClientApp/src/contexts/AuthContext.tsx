@@ -26,13 +26,11 @@ export const AuthContextProvider: React.FunctionComponent<IProp> = (props) => {
 
     const cookieService = new CookieService();
     let isCookieExist = cookieService.get(ACCESS_TOKEN_COOKIE_NAME) !== undefined;
-    let c_user = cookieService.get(LOGGED_IN_USER_COOKIE_NAME);
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(isCookieExist);
-    const [currentUser, setCurrentUser] = useState<IUser | null>(c_user !== undefined ? c_user : null);
+    const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
     const handleLogin = (user: IUser) => {
-        cookieService.set(LOGGED_IN_USER_COOKIE_NAME, user);
         setIsAuthenticated(true);
         setCurrentUser(user);
     }

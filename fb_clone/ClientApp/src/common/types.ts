@@ -41,6 +41,8 @@ export interface IUser {
     firstName: string;
     lastName: string;
     email: string;
+    profilePhoto: string;
+    coverPhoto: string;
 }
 
 export interface IPost {

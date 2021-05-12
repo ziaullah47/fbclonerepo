@@ -33,6 +33,11 @@ namespace fb_clone.Models
         [Required]
         [StringLength(6)]
         public GenderEnum Gender { get; set; }
+
+        public byte[] ProfilePhoto { get; set; }
+
+        public byte[] CoverPhoto { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
