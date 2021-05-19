@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown } from "reactstrap";
 import { IComment, ICommentCreateRequest, ICommenUpdateRequest } from "../../common/types";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -122,7 +123,10 @@ const Comment: React.FunctionComponent<IProp> = props => {
     const getReplyInput = () => {
         if (showReply) {
             return <div className="d-flex my-2">
-                <Avatar url={authContext.currentUser?.profilePhoto} />
+                <Avatar
+                    src={authContext.currentUser?.profilePhoto}
+                    href={"/profile/" + authContext.currentUser?.id}
+                />
                 <Input
                     type="text"
                     className="custom-input ml-2"
@@ -185,11 +189,14 @@ const Comment: React.FunctionComponent<IProp> = props => {
 
     return (
         <div className="d-flex">
-            <Avatar url={authContext.currentUser?.profilePhoto} />
+            <Avatar
+                src={comment.commentedBy.profilePhoto}
+                href={"/profile/" + comment.commentedBy.id}
+            />
             <div className="flex-grow-1 ml-2">
                 <div className="d-flex align-items-center">
                     <div className="flex-grow-1 comment-content">
-                        {editing ? null : <strong>{comment.commentedBy.firstName + " " + comment.commentedBy.lastName}</strong>}
+                        {editing ? null : <Link to={"/profile/" + comment.commentedBy.id}><strong>{comment.commentedBy.firstName + " " + comment.commentedBy.lastName}</strong></Link>}
                         {getCommentInput()}
                     </div>
                     {getActionDropdown()}

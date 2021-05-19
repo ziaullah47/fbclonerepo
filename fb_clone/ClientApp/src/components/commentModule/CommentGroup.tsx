@@ -12,15 +12,15 @@ interface IProp extends React.HTMLAttributes<HTMLElement> {
 
 const CommentGroup: React.FunctionComponent<IProp> = props => {
 
-    const { comments, postId, deleteHandler, likeHandler, updateHandler } = props;
+    const { comments, deleteHandler, likeHandler, updateHandler } = props;
 
     const commentItems = comments.map(cmt => {
-        return <Comment 
-        key={cmt.id} 
-        comment={cmt} 
-        deleteHandler={deleteHandler} 
-        likeHandler={likeHandler}
-        updateHandler={updateHandler}
+        return <Comment
+            key={cmt.id}
+            comment={cmt}
+            deleteHandler={deleteHandler}
+            likeHandler={likeHandler}
+            updateHandler={updateHandler}
         />;
     })
 

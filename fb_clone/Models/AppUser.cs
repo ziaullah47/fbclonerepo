@@ -41,6 +41,9 @@ namespace fb_clone.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public ICollection<Friendship> Friends { get; set; }
+        public ICollection<Friendship> FriendOf { get; set; }
+
         public ICollection<Post> Posts { get; set; }
 
         public ICollection<PostUserLikes> PostLikes { get; set; }

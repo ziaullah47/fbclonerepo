@@ -25,6 +25,13 @@ const TopNav: React.FunctionComponent<IProps> = (props) => {
         authContext.logout();
     }
 
+    const getAppropritateClassName = (path: string) => {
+        if(props.location.pathname === path) {
+            return "selected-tab";
+        }
+        return "";
+    }
+
     return (
         <Navbar color="light" fixed="top" light expand="md" className="shadow mb-2 bg-white rounded">
             <div className="nav-items">
@@ -54,27 +61,27 @@ const TopNav: React.FunctionComponent<IProps> = (props) => {
                 <Collapse isOpen={isCollasped} navbar className="nav-items-middle">
                     <Nav navbar>
                         <NavItem className="px-4">
-                            <NavLink href="/">
-                                <FontAwesomeIcon icon="home" size="2x" color="#0E8EF2" />
+                            <NavLink href="/" className={getAppropritateClassName("/")}>
+                                <FontAwesomeIcon icon="home" size="2x" />
                             </NavLink>
                         </NavItem>
                         <NavItem className="px-4">
-                            <NavLink href="/">
+                            <NavLink href="/watch" className={getAppropritateClassName("/watch")}>
                                 <FontAwesomeIcon icon="tv" size="2x" />
                             </NavLink>
                         </NavItem>
                         <NavItem className="px-4">
-                            <NavLink href="/">
+                            <NavLink href="/marketplace" className={getAppropritateClassName("/marketplace")}>
                                 <FontAwesomeIcon icon="store" size="2x" />
                             </NavLink>
                         </NavItem>
                         <NavItem className="px-4">
-                            <NavLink href="/">
+                            <NavLink href="/groups" className={getAppropritateClassName("/groups")}>
                                 <FontAwesomeIcon icon="users" size="2x" />
                             </NavLink>
                         </NavItem>
                         <NavItem className="px-4">
-                            <NavLink href="/">
+                            <NavLink href="/gaming" className={getAppropritateClassName("/gaming")}>
                                 <FontAwesomeIcon icon="gamepad" size="2x" />
                             </NavLink>
                         </NavItem>
@@ -83,8 +90,8 @@ const TopNav: React.FunctionComponent<IProps> = (props) => {
                 <Collapse isOpen={isCollasped} navbar className="nav-items-right">
                     <Nav navbar >
                         <NavItem className="px-4">
-                            <NavLink href="/profile" className="d-flex align-items-center justify-content-center">
-                                <Avatar url={authContext.currentUser?.profilePhoto} width="40px" height="40px" />
+                            <NavLink href={"/profile/" + authContext.currentUser?.id} className="d-flex align-items-center justify-content-center">
+                                <Avatar src={authContext.currentUser?.profilePhoto} width="40px" height="40px" />
                                 <span className="ml-1">{authContext.currentUser?.firstName}</span>
                             </NavLink>
                         </NavItem>

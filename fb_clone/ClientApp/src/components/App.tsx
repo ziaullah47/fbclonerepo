@@ -35,7 +35,7 @@ const App = () => {
                 <div className="content-wrapper">
                     <AlertSelector />
                     <Switch>
-                        <PrivateRoute exact path="/profile" component={Profile} />
+                        <PrivateRoute exact path="/profile/:id" component={Profile} />
                         <PublicRoute exact path="/search" component={SearchResult} />
                         <PublicRoute exact path='/' component={Home} />
                     </Switch>

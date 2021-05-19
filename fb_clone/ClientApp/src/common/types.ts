@@ -80,6 +80,15 @@ export interface IComment {
     commentedBy: IUser;
     isLiked: boolean;
     totalLikes: number;
-    totalReplies: number
+    totalReplies: number;
     replies: IComment[];
+}
+
+export interface IFriendAddRequest {
+    fromId: number;
+    toId: number;
+}
+
+export interface IIsMyFriendResponse {
+    isFriend: boolean;
 }

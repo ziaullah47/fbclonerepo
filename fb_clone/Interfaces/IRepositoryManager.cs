@@ -15,6 +15,7 @@ namespace fb_clone.Interfaces
 
         IRepositoryBase<PostComment> PostComments { get; }
         IRepositoryBase<CommentUserLikes> CommentLikes { get; }
+        IRepositoryBase<Friendship> Friendships { get; }
         Task SaveAsync();
     }
 }

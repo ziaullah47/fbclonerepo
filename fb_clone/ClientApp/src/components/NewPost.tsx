@@ -11,11 +11,18 @@ const NewPost: React.FunctionComponent<IProp> = props => {
     const authContext = useContext(AuthContext);
 
     const { newPostHandler } = props;
+    if (authContext.currentUser === null) {
+        return null;
+    }
     return (
         <Card>
             <CardBody className="new-post-top">
-                <Avatar width="40px" height="40px" url={authContext.currentUser?.profilePhoto} />
-                <div className="new-post-input-div" onClick={newPostHandler}>What's on your mind, Junaid?</div>
+                <Avatar
+                    width="40px"
+                    height="40px"
+                    href={"/profile/" + authContext.currentUser.id}
+                    src={authContext.currentUser.profilePhoto} />
+                <div className="new-post-input-div" onClick={newPostHandler}>{`What's on your mind, ${authContext.currentUser.firstName}?`}</div>
             </CardBody>
             <CardFooter className="d-flex justify-content-between">
                 <div className="hoverable-nav-link p-2">

@@ -76,6 +76,22 @@ namespace fb_clone.Models
                 .HasForeignKey(cl => cl.AppUserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // friendship
+            modelBuilder.Entity<Friendship>()
+                .HasKey(x => new { x.FromId, x.ToId });
+
+            modelBuilder.Entity<Friendship>()
+                .HasOne<AppUser>(x => x.FriendshipFrom)
+                .WithMany(x => x.Friends)
+                .HasForeignKey(x => x.FromId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Friendship>()
+                .HasOne<AppUser>(x => x.FriendshipTo)
+                .WithMany(x => x.FriendOf)
+                .HasForeignKey(x => x.ToId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(modelBuilder);
         }
 

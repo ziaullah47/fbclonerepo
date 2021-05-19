@@ -21,7 +21,7 @@ const NewComment: React.FunctionComponent<IProp> = props => {
     }
     return (
         <div className="d-flex my-2">
-            <Avatar url={authContext.currentUser?.profilePhoto} />
+            <Avatar src={authContext.currentUser!.profilePhoto} href={"/profile/" + authContext.currentUser!.id} />
             <Input
                 type="text"
                 className="custom-input ml-2"

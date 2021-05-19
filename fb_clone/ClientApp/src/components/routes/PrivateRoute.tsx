@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 import { Redirect, Route, RouteProps } from "react-router";
-import { AlertVariant } from "../../common/types";
-import { AlertContext } from "../../contexts/AlertContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
 interface IProps extends RouteProps {

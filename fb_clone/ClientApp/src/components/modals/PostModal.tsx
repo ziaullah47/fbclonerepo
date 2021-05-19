@@ -1,4 +1,4 @@
-import React, {FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { Modal, ModalHeader, ModalBody, Form, Button } from "reactstrap";
 import { AuthContext } from "../../contexts/AuthContext";
 import Avatar from "../Avatar";
@@ -48,7 +48,10 @@ const PostModal: React.FunctionComponent<IProp> = (props) => {
             <ModalHeader toggle={toggleHandler}>Create Post</ModalHeader>
             <ModalBody>
                 <div className="create-post-avatar">
-                    <Avatar url={authContext.currentUser?.profilePhoto}/>
+                    <Avatar
+                        src={authContext.currentUser?.profilePhoto}
+                        href={"/profile/" + authContext.currentUser?.id}
+                    />
                     <span className="mx-2">{fullName}</span>
                 </div>
                 <div className="create-post-form">

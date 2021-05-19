@@ -26,36 +26,45 @@ namespace fb_clone.Extensions
                     var detail = "Something went wrong. Please try again later.";
                     var errors = new List<ValidationError>();
 
-                    if(feature?.Error is ResourceNotFoundException nfe)
+                    if (feature?.Error is ResourceNotFoundException nfe)
                     {
                         statusCode = 404;
                         title = "Resource Not Found";
                         detail = nfe.Message;
-                    } else if(feature?.Error is ResourceAlreadyExistException aee)
+                    }
+                    else if (feature?.Error is ResourceAlreadyExistException aee)
                     {
                         statusCode = 409;
                         title = "Resource Aleady Exist";
                         detail = aee.Message;
-                    } else if(feature?.Error is ValidationException ve)
+                    }
+                    else if (feature?.Error is ValidationException ve)
                     {
                         statusCode = 400;
                         title = "Validation Error";
                         detail = "One or more provided values are invalid";
                         errors = ve.Errors;
-                    } else if(feature?.Error is UnauthorizeException ue)
+                    }
+                    else if (feature?.Error is UnauthorizeException ue)
                     {
                         statusCode = 401;
                         title = "Authorization Error";
                         detail = ue.Message;
                     }
+                    else if (feature?.Error is BadRequestException be)
+                    {
+                        statusCode = 400;
+                        title = "Bad Request";
+                        detail = be.Message;
+                    }
 
                     var apiError = new ApiErrorResponse
                     {
-                        StatusCode =statusCode,
+                        StatusCode = statusCode,
                         Title = title,
                         Detail = detail
                     };
-                    if(errors.Count > 0)
+                    if (errors.Count > 0)
                     {
                         apiError.Errors = errors;
                     }

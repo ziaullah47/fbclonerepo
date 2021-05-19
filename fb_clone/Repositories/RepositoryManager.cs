@@ -15,6 +15,7 @@ namespace fb_clone.Repositories
         private RepositoryBase<PostUserLikes> postUserLike;
         private RepositoryBase<PostComment> postComment;
         private RepositoryBase<CommentUserLikes> commentLike;
+        private RepositoryBase<Friendship> friendship;
 
         private bool disposed = false;
 
@@ -31,6 +32,8 @@ namespace fb_clone.Repositories
         public IRepositoryBase<PostComment> PostComments => postComment ??= new RepositoryBase<PostComment>(context);
 
         public IRepositoryBase<CommentUserLikes> CommentLikes => commentLike ??= new RepositoryBase<CommentUserLikes>(context);
+
+        public IRepositoryBase<Friendship> Friendships => friendship ??= new RepositoryBase<Friendship>(context);
 
         protected virtual void Dispose(bool disposing)
         {

@@ -1,12 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { IUser } from "../../common/types";
+import React, { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import AuthService from "../../services/AuthService";
-import UserService from "../../services/UserService";
 import LeftMenu from "../LeftMenu";
 import MiddleContent from "../MiddleContent";
 import RightMenu from "../RightMenu";
-import TopNav from "../TopNav";
 
 const Wall: React.FunctionComponent = () => {
     const authContext = useContext(AuthContext);
