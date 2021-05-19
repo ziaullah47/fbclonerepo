@@ -10,10 +10,16 @@
 
 ## Features
 
+* User registration
 * User Authentication with .Net Core Identity
-* JWT Bearer Token
-* Role base Authorzation
-* Photo Uploading
+* Upload profile and cover photo
+* Create and update Post
+* Comment and Reply to Post
+* Like or dislike a Post
+* Like or dislike a comment or reply
+* Search users
+* Add or remove friends
+
 
 ## Requirements
 
