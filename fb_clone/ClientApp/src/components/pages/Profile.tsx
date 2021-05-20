@@ -3,7 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { ModalHeader, ModalBody, Form, Button, Input, NavLink, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import Modal from "reactstrap/es/Modal";
-import { IFriendAddRequest, IUser } from "../../common/types";
+import { AlertVariant, IFriendAddRequest, IUser } from "../../common/types";
+import { AlertContext } from "../../contexts/AlertContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import UserService from "../../services/UserService";
 import Avatar from "../Avatar";
@@ -31,6 +32,7 @@ const Profile: React.FunctionComponent<IProp> = props => {
     const userId = +props.match.params.id;
 
     const authContext = useContext(AuthContext);
+    const alertContext = useContext(AlertContext);
     const userService = new UserService();
 
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -62,17 +64,19 @@ const Profile: React.FunctionComponent<IProp> = props => {
 
     const uploadPhoto = (e: React.FormEvent) => {
         e.preventDefault();
-        if (selectedFile) {
+        if (selectedFile && authContext.currentUser?.id === userId) {
             let data: FormData = new FormData();
             data.append("file", selectedFile, "profile_photo")
             if (selectedModal === ModalType.Cover) {
                 userService.UploadCoverPhoto(data).then(resp => {
                     authContext.login(resp.data);
+                    setUser(resp.data);
                     setShowModal(false);
                 })
             } else {
                 userService.UploadProfilePhoto(data).then(resp => {
                     authContext.login(resp.data);
+                    setUser(resp.data);
                     setShowModal(false);
                 })
             }
@@ -148,7 +152,7 @@ const Profile: React.FunctionComponent<IProp> = props => {
                 <div key={friend.id} className="friend-card d-flex">
                     <div className="d-flex align-items-center flex-grow-1">
                         {friend.profilePhoto.length === 0 ?
-                            <FontAwesomeIcon icon={['far', 'user']} size="3x" /> : <img src={`data:image/png;base64, ${friend.profilePhoto}`} alt="profile"/>
+                            <FontAwesomeIcon icon={['far', 'user']} size="3x" /> : <img src={`data:image/png;base64, ${friend.profilePhoto}`} alt="profile" />
                         }
                         <Link to={`/profile/${friend.id}`} className="ml-2">
                             <h5>{friend.firstName + " " + friend.lastName}</h5>
@@ -191,7 +195,7 @@ const Profile: React.FunctionComponent<IProp> = props => {
     }
 
     const getFriendButton = () => {
-        if (authContext.currentUser?.id === userId) {
+        if (authContext.currentUser!.id === userId) {
             return null;
         }
 
@@ -210,7 +214,7 @@ const Profile: React.FunctionComponent<IProp> = props => {
     const handleAddFriendClick = () => {
         if (authContext.currentUser) {
             let data: IFriendAddRequest = {
-                fromId: authContext.currentUser?.id,
+                fromId: authContext.currentUser!.id,
                 toId: userId
             }
             userService.AddFriend(authContext.currentUser.id, data).then(resp => {
@@ -219,13 +223,18 @@ const Profile: React.FunctionComponent<IProp> = props => {
         }
     }
 
+    if (user === null || authContext.currentUser === null) {
+        alertContext.show("Profile does not exist", AlertVariant.DANGER);
+        return null;
+    }
+
     return (
         <div className="profile-page">
             <div className="profile-top">
                 <div className="profile-top-container">
                     <div className="cover-photo-section">
                         <div className="cover-photo">
-                            <img src={`data:image/png;base64, ${user?.coverPhoto}`}
+                            <img src={`data:image/png;base64, ${user.coverPhoto}`}
                                 alt="cover"
                             />
                         </div>
@@ -233,14 +242,14 @@ const Profile: React.FunctionComponent<IProp> = props => {
                     </div>
                     <div className="profile-page-avatar">
                         <Avatar
-                            href={"/profile/" + user?.id}
-                            src={user?.profilePhoto}
+                            href={"/profile/" + user.id}
+                            src={user.profilePhoto}
                             width="120"
                             height="120" />
                         {getProfilePhotoUploadIcon()}
                     </div>
                     <div className="profile-bio">
-                        <h4>{user?.firstName + " " + user?.lastName}</h4>
+                        <h4>{user.firstName + " " + user.lastName}</h4>
                     </div>
 
                     <div className="dropdown-divider" />
