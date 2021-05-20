@@ -11,6 +11,7 @@ interface IProps {
     closeHandler?(): void;
   }
   const FlashAlert: React.FunctionComponent<IProps> = (props) => {
+    
     useEffect(() => {
       let t = props.duration ? props.duration : 3200;
       const timer = setTimeout(() => {

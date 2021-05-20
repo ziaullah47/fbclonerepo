@@ -5,7 +5,7 @@ import FlashAlert from "./FlashAlert";
 const AlertSelector: React.FunctionComponent = () => {
     const alertContext = useContext(AlertContext);
 
-    if (alertContext.message) {
+    if (alertContext.isShow && alertContext.message) {
         return <FlashAlert
             title={alertContext.message}
             errors={alertContext.errors}

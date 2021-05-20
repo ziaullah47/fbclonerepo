@@ -224,7 +224,6 @@ const Profile: React.FunctionComponent<IProp> = props => {
     }
 
     if (user === null || authContext.currentUser === null) {
-        alertContext.show("Profile does not exist", AlertVariant.DANGER);
         return null;
     }
 
