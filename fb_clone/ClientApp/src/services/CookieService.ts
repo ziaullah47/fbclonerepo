@@ -1,13 +1,13 @@
 import Cookies, { CookieSetOptions } from "universal-cookie/es6";
 
 class CookieService {
-    private cookies;
+    private cookies: Cookies;
 
-    constructor(){
+    constructor() {
         this.cookies = new Cookies();
     }
 
-    public get(name:string) {
+    public get(name: string) {
         return this.cookies.get(name);
     }
 
