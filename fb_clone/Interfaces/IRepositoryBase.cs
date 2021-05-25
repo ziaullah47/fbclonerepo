@@ -1,4 +1,6 @@
-﻿using System;
+﻿using fb_clone.DTO;
+using fb_clone.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +16,13 @@ namespace fb_clone.Interfaces
              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
              List<string> includes = null
             );
+
+        Task<PagedList<T>> GetPagedListAsync(
+            PaginationParamsDTO pagination,
+            Expression<Func<T, bool>> expression = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            List<string> includes = null
+    );
 
         Task<T> GetFirstByQueryAsync(Expression<Func<T, bool>> expression, List<string> includes = null);
 

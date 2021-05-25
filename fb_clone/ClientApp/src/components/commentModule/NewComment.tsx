@@ -19,9 +19,14 @@ const NewComment: React.FunctionComponent<IProp> = props => {
             setNewComment("");
         }
     }
+
+    if(authContext.currentUser === null) {
+        return null;
+    }
+
     return (
         <div className="d-flex my-2">
-            <Avatar src={authContext.currentUser!.profilePhoto} href={"/profile/" + authContext.currentUser!.id} />
+            <Avatar src={authContext.currentUser.profilePhoto} href={"/profile/" + authContext.currentUser.id} />
             <Input
                 type="text"
                 className="custom-input ml-2"

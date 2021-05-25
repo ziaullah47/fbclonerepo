@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using fb_clone.DTO;
 using fb_clone.Exceptions;
+using fb_clone.Extensions;
 using fb_clone.Interfaces;
 using fb_clone.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -169,15 +171,16 @@ namespace fb_clone.Controllers
 
         [HttpGet]
         [Route("{id}/posts")]
-        public async Task<IActionResult> GetPosts(int id)
+        public async Task<IActionResult> GetPosts(int id, [FromQuery] PaginationParamsDTO pagination)
         {
-            var user = await repository.Users.GetFirstByQueryAsync(q => q.Id == id, includes: new List<string> { "Posts.PostLikes", "Posts.Comments" });
+            var user = await repository.Users.GetFirstByQueryAsync(q => q.Id == id);
+            var page = await repository.Posts.GetPagedListAsync(pagination, expression: q => q.AppUserId == user.Id, orderBy: q => q.OrderByDescending(x => x.CreatedAt), includes: new List<string> { "User", "PostLikes.AppUser", "Comments" });
             if (user == null)
             {
                 throw new ResourceNotFoundException($"User not found");
             }
 
-            foreach (var p in user.Posts)
+            foreach (var p in page.Items)
             {
                 foreach (var pl in p.PostLikes)
                 {
@@ -188,7 +191,7 @@ namespace fb_clone.Controllers
                 }
             }
 
-            var result = mapper.Map<IEnumerable<PostDTO>>(user.Posts);
+            var result = page.ToMappedPagedList<Post, PostDTO>(mapper);
             return Ok(result);
         }
     }

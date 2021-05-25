@@ -92,3 +92,18 @@ export interface IFriendAddRequest {
 export interface IIsMyFriendResponse {
     isFriend: boolean;
 }
+
+export interface IPagedMetaData {
+    pageNumber: number;
+    pageSize: number;
+    totalPages: number;
+    totalRecords: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    isFirstPage: boolean;
+    isLastPage: boolean;
+}
+export interface IPagedList<T> {
+    items: T[],
+    metaData: IPagedMetaData
+}

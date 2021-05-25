@@ -1,5 +1,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { IPost, IPostCreateRequest, IPostUpdateRequest } from "../common/types";
+import { PAGE_NUMBER, PAGE_SIZE } from "../common/Constants";
+import { IPagedList, IPagedMetaData, IPost, IPostCreateRequest, IPostUpdateRequest } from "../common/types";
 import PostService from "../services/PostService";
 import FeedItem from "./FeedItem";
 import PostModal from "./modals/PostModal";
@@ -13,24 +14,35 @@ interface IProp extends React.HTMLAttributes<HTMLElement> {
 const Feeds: React.FunctionComponent<IProp> = props => {
 
     const postService = new PostService();
-
     const [posts, setPosts] = useState<IPost[]>([]);
+    const [pageMeta, setPageMeta] = useState<IPagedMetaData>(
+        {
+            pageNumber: 0,
+            pageSize: 0,
+            totalPages: 0,
+            totalRecords: 0,
+            hasNextPage: false,
+            hasPreviousPage: false,
+            isFirstPage: false,
+            isLastPage: false
+        }
+    );
     const [postText, setPostText] = useState<string>("");
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [editingPostId, setEditingPostId] = useState<number>(0);
 
-
-
     useEffect(() => {
         if (props.userId) {
-            postService.GetPostsByUserId(props.userId).then(resp => {
-                setPosts(resp.data);
+            postService.GetPostsByUserId(props.userId, PAGE_NUMBER, PAGE_SIZE).then(resp => {
+                setPosts(resp.data.items);
+                setPageMeta(resp.data.metaData);
             }).catch(err => {
                 console.log("Post fetching error: ", err);
             })
         } else {
-            postService.GetPosts().then(resp => {
-                setPosts(resp.data);
+            postService.GetPosts(PAGE_NUMBER, PAGE_SIZE).then(resp => {
+                setPosts(resp.data.items);
+                setPageMeta(resp.data.metaData);
             }).catch(err => {
                 console.log("Post fetching error: ", err);
             })
@@ -99,11 +111,13 @@ const Feeds: React.FunctionComponent<IProp> = props => {
         })
     }
 
-    const postCards = posts.map(p => {
-        return (
-            <FeedItem key={p.id} post={p} editPostHandler={editPost} deletePostHandler={deletePost} likePostHandler={likePost} />
-        );
-    })
+    const getPostCards = () => {
+        return posts.map(p => {
+            return (
+                <FeedItem key={p.id} post={p} editPostHandler={editPost} deletePostHandler={deletePost} likePostHandler={likePost} />
+            );
+        });
+    }
 
     const getNewpostContainer = () => {
         if (props.displayNewPost) {
@@ -115,7 +129,7 @@ const Feeds: React.FunctionComponent<IProp> = props => {
     return (
         <React.Fragment>
             {getNewpostContainer()}
-            {postCards}
+            {getPostCards()}
             <PostModal
                 defaultValue={postText}
                 isOpen={isOpen}

@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { HTTPStatusEnum, IPost, IPostCreateRequest, IPostUpdateRequest } from "../common/types";
+import { HTTPStatusEnum, IPagedList, IPost, IPostCreateRequest, IPostUpdateRequest } from "../common/types";
 import HttpRequest from "./HttpRequest";
 
 class PostService {
@@ -11,14 +11,15 @@ class PostService {
 
     }
 
-    public async GetPosts(): Promise<AxiosResponse<IPost[]>> {
-        const url = "/posts";
-        return await this.httpRequest.get<IPost[]>(url);
+    public async GetPosts(pageNumber: number, pageSize: number): Promise<AxiosResponse<IPagedList<IPost>>> {
+        let url = "/posts?pageNumber=" + pageNumber + "&pageSize=" + pageSize;
+        return await this.httpRequest.get<IPagedList<IPost>>(url);
     }
 
-    public async GetPostsByUserId(id: number): Promise<AxiosResponse<IPost[]>> {
-        const url = "users/" + id + "/posts";
-        return await this.httpRequest.get<IPost[]>(url);
+    public async GetPostsByUserId(id: number, pageNumber: number, pageSize: number): Promise<AxiosResponse<IPagedList<IPost>>> {
+        let url = "users/" + id + "/posts?pageNumber=" + pageNumber + "&pageSize=" + pageSize;
+
+        return await this.httpRequest.get<IPagedList<IPost>>(url);
     }
 
     public async CreatePost(data: IPostCreateRequest): Promise<AxiosResponse<IPost>> {

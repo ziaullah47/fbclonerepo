@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using fb_clone.DTO;
 using fb_clone.Exceptions;
+using fb_clone.Extensions;
 using fb_clone.Interfaces;
 using fb_clone.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -22,18 +23,18 @@ namespace fb_clone.Controllers
         private readonly IRepositoryManager repository;
         private readonly IMapper mapper;
 
-        public PostsController(IRepositoryManager repository,IMapper mapper)
+        public PostsController(IRepositoryManager repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPosts()
+        public async Task<IActionResult> GetPosts([FromQuery] PaginationParamsDTO pagination)
         {
-            var posts = await repository.Posts.GetAllAsync(orderBy: q => q.OrderByDescending(x => x.Id), includes: new List<string> { "User", "PostLikes.AppUser", "Comments" });
+            var page = await repository.Posts.GetPagedListAsync(pagination, orderBy: q => q.OrderByDescending(x => x.CreatedAt), includes: new List<string> { "User", "PostLikes.AppUser", "Comments" });
             var user = await repository.Users.GetUserByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            foreach (var p in posts)
+            foreach (var p in page.Items)
             {
                 foreach (var pl in p.PostLikes)
                 {
@@ -43,7 +44,8 @@ namespace fb_clone.Controllers
                     }
                 }
             }
-            var result = mapper.Map<IEnumerable<PostDTO>>(posts);
+
+            var result = page.ToMappedPagedList<Post, PostDTO>(mapper);
             return Ok(result);
         }
 
@@ -80,7 +82,7 @@ namespace fb_clone.Controllers
             var isLiked = existingLike == null;
             if (existingLike != null)
             {
-                 repository.PostLikes.Delete(existingLike);
+                repository.PostLikes.Delete(existingLike);
             }
             else
             {

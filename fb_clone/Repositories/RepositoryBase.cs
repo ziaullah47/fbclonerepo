@@ -1,4 +1,5 @@
-﻿using fb_clone.Interfaces;
+﻿using fb_clone.DTO;
+using fb_clone.Interfaces;
 using fb_clone.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -58,6 +59,30 @@ namespace fb_clone.Repositories
 
             return await query.AsNoTracking().ToListAsync();
 
+        }
+
+        public async Task<PagedList<T>> GetPagedListAsync(PaginationParamsDTO pagination, Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
+        {
+            IQueryable<T> query = db;
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return await PagedList<T>.BuildPagedList(query, pagination);
         }
 
         public async Task<T> GetFirstByQueryAsync(Expression<Func<T, bool>> expression, List<string> includes = null)
