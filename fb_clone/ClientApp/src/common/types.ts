@@ -103,7 +103,6 @@ export interface IPagedMetaData {
     isFirstPage: boolean;
     isLastPage: boolean;
 }
-export interface IPagedList<T> {
-    items: T[],
-    metaData: IPagedMetaData
+export interface IPagedList<T> extends IPagedMetaData {
+    items: T[]
 }

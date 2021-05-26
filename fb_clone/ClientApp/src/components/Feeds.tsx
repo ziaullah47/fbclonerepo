@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { PAGE_NUMBER, PAGE_SIZE } from "../common/Constants";
 import { IPagedList, IPagedMetaData, IPost, IPostCreateRequest, IPostUpdateRequest } from "../common/types";
 import PostService from "../services/PostService";
@@ -17,8 +18,8 @@ const Feeds: React.FunctionComponent<IProp> = props => {
     const [posts, setPosts] = useState<IPost[]>([]);
     const [pageMeta, setPageMeta] = useState<IPagedMetaData>(
         {
-            pageNumber: 0,
-            pageSize: 0,
+            pageNumber: PAGE_NUMBER,
+            pageSize: PAGE_SIZE,
             totalPages: 0,
             totalRecords: 0,
             hasNextPage: false,
@@ -33,21 +34,21 @@ const Feeds: React.FunctionComponent<IProp> = props => {
 
     useEffect(() => {
         if (props.userId) {
-            postService.GetPostsByUserId(props.userId, PAGE_NUMBER, PAGE_SIZE).then(resp => {
-                setPosts(resp.data.items);
-                setPageMeta(resp.data.metaData);
+            postService.GetPostsByUserId(props.userId, pageMeta.pageNumber, pageMeta.pageSize).then(resp => {
+                setPosts([...posts, ...resp.data.items]);
+                setPageMeta({ ...resp.data });
             }).catch(err => {
                 console.log("Post fetching error: ", err);
             })
         } else {
-            postService.GetPosts(PAGE_NUMBER, PAGE_SIZE).then(resp => {
-                setPosts(resp.data.items);
-                setPageMeta(resp.data.metaData);
+            postService.GetPosts(pageMeta.pageNumber, pageMeta.pageSize).then(resp => {
+                setPosts([...posts, ...resp.data.items]);
+                setPageMeta({ ...resp.data });
             }).catch(err => {
                 console.log("Post fetching error: ", err);
             })
         }
-    }, []);
+    }, [pageMeta.pageNumber]);
 
     const toggle = () => {
         setIsOpen(!isOpen);
@@ -129,7 +130,19 @@ const Feeds: React.FunctionComponent<IProp> = props => {
     return (
         <React.Fragment>
             {getNewpostContainer()}
-            {getPostCards()}
+            <InfiniteScroll
+                dataLength={posts.length}
+                next={() => setPageMeta({ ...pageMeta, pageNumber: pageMeta.pageNumber + 1 })}
+                hasMore={pageMeta.hasNextPage}
+                loader={<h4>Loading...</h4>}
+                endMessage={
+                    <p style={{ textAlign: 'center' }}>
+                        <b>Yay! You have seen it all</b>
+                    </p>
+                }
+            >
+                {getPostCards()}
+            </InfiniteScroll>
             <PostModal
                 defaultValue={postText}
                 isOpen={isOpen}
