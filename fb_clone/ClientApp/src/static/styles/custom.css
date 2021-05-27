@@ -309,6 +309,25 @@
         justify-content: space-between;
     }
     
+    .auto-suggest-list {
+        position: absolute;
+        padding: 3px;
+        background-color: #fff;
+        box-shadow: 0 4px 16px rgba(20, 23, 28, .25);
+    }
+    
+    .auto-suggest-item {
+        display: flex;
+        align-items: center;
+        padding: 3px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .auto-suggest-item:hover {
+        background-color: #F0F2F5;
+    }
+    
     .selected-tab {
         border-bottom: 3px solid #0E8EF2;
         color: #0E8EF2 !important;

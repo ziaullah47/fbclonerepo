@@ -1,17 +1,22 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import { Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from "reactstrap";
+import { IUser } from "../common/types";
 import { AuthContext } from "../contexts/AuthContext";
+import UserService from "../services/UserService";
 import Avatar from "./Avatar";
 
 interface IProps extends RouteComponentProps { }
 const TopNav: React.FunctionComponent<IProps> = (props) => {
     const authContext = useContext(AuthContext);
+    const userService = new UserService();
 
     const [isCollasped, setIsCollasped] = useState<boolean>(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [suggestions, setSuggestions] = useState<IUser[]>([]);
 
     const toggleCollaspse = () => setIsCollasped(!isCollasped);
     const toogleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -25,11 +30,36 @@ const TopNav: React.FunctionComponent<IProps> = (props) => {
         authContext.logout();
     }
 
+    const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+        userService.SearchUser(e.target.value).then(resp => {
+            setSuggestions(resp.data);
+        })
+    }
+
     const getAppropritateClassName = (path: string) => {
-        if(props.location.pathname === path) {
+        if (props.location.pathname === path) {
             return "selected-tab";
         }
         return "";
+    }
+
+    const handleSearchItemClick = () => {
+        setSearchQuery("");
+        setSuggestions([]);
+    }
+
+    const getSuggestions = () => {
+        return suggestions.map(s => {
+            return (
+                <Link to={"/profile/" + s.id} className="auto-suggest-item" onClick={handleSearchItemClick}>
+                    <Avatar src={s.profilePhoto} width="40px" height="40px" />
+                    <span className="ml-2">
+                        {s.firstName + " " + s.lastName}
+                    </span>
+                </Link>
+            );
+        })
     }
 
     return (
@@ -51,11 +81,15 @@ const TopNav: React.FunctionComponent<IProps> = (props) => {
                                         type="search"
                                         placeholder="Search Facebook"
                                         value={searchQuery}
-                                        onChange={e => setSearchQuery(e.target.value)}
+                                        onChange={handleSearchInputChange}
                                     />
                                 </div>
                             </Form>
+                            <div className="auto-suggest-list">
+                                {getSuggestions()}
+                            </div>
                         </NavItem>
+
                     </Nav>
                 </div>
                 <Collapse isOpen={isCollasped} navbar className="nav-items-middle">
