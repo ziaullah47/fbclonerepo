@@ -16,7 +16,7 @@ const Avatar: React.FunctionComponent<IProp> = props => {
         if (href) {
             if (src) {
                 return <Link to={href}>
-                    <img src={`data:image/png;base64, ${src}`} width={width ? width : 40} height={height ? height : 40} alt="Avatr" />
+                    <img src={`data:image/png;base64, ${src}`} width={width ? width : 45} height={height ? height : 45} alt="Avatr" />
                 </Link>;
             }
             return <Link to={href}>
@@ -24,7 +24,7 @@ const Avatar: React.FunctionComponent<IProp> = props => {
             </Link>
         } else {
             if (src) {
-                return <img src={`data:image/png;base64, ${src}`} width={width ? width : 40} height={height ? height : 40} alt="Avatr" />
+                return <img src={`data:image/png;base64, ${src}`} width={width ? width : 45} height={height ? height : 45} alt="Avatr" />
             }
             return <div className="default-avatar"><FontAwesomeIcon icon={['far', 'user']} size="2x" /></div>
         }

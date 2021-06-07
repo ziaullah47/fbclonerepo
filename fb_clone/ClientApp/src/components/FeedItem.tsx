@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardBody, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 import { IPost } from "../common/types";
+import { timeAgo } from "../common/utils/DateUtil";
 import { AuthContext } from "../contexts/AuthContext";
 import Avatar from "./Avatar";
 import CommentModule from "./commentModule/CommentModule";
@@ -50,9 +51,12 @@ const FeedItem: React.FunctionComponent<IProp> = props => {
                             src={post.user.profilePhoto}
                             href={"/profile/" + post.user.id}
                         />
-                        <Link to={"/profile/" + post.user.id}>
-                            <strong className="pl-2">{post.user.firstName + " " + post.user.lastName}</strong>
-                        </Link>
+                        <div className="d-flex flex-column pl-2">
+                            <Link to={"/profile/" + post.user.id}>
+                                <strong>{post.user.firstName + " " + post.user.lastName}</strong>
+                            </Link>
+                            <small className="text-secondary">{timeAgo(post.createdAt)}</small>
+                        </div>
                     </div>
                     <div>
                         {getStatusActionOptions()}

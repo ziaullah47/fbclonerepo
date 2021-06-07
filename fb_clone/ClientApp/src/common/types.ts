@@ -52,6 +52,8 @@ export interface IPost {
     totalLikes: number;
     isLiked: number;
     totalComments: number;
+    createdAt: Date;
+    updatedAt: Date;
 }
 export interface IPostCreateRequest {
     content: string;
