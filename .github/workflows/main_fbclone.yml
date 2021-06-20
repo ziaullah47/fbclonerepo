@@ -53,5 +53,5 @@ jobs:
       with:
         app-name: 'fbclone'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_7aa51b015eff4c81b88abc4fc563a5e6 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_b79bab215b854923ab03daba10ea00eb }}
         package: .
